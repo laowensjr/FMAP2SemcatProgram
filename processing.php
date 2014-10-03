@@ -1,6 +1,24 @@
 <?php 
 include('apiKey.php');
-// Developer & Doc Author: Lawrence Owens
+/*
+ *  **********************************************************************************************************************
+ * Developer & Doc Author: Lawrence Owens
+ * Name of Application: Blank2Semcat
+ * 
+ * Summary: 
+ * First we will setup the incoming FMAP customer data, $apikey and $authenticity_token, additionally we'll setup the URLs 
+ * for the forms that we will be accessing along with the POSTFIELDS associated with each URL.
+ * Secondly, this Application will post to multiple forms on the same server. They will not post in parallel. 
+ * 	They will make multiple serial request using the same cURL handle.
+ * 
+ * cURL Resources - See Resources: 
+ * 	1) Multiple Actions with cURL - http://stackoverflow.com/questions/9549892/multiple-actions-with-curl
+ * 	2) cURL Posting to Multiple Forms on Another Server - 
+ * 		http://forums.devshed.com/php-development-5/curl-posting-multiple-forms-server-314318.html
+ * 	3) Set an Option for a cURL Transfer - http://php.net/manual/en/function.curl-setopt.php
+ * **********************************************************************************************************************
+ */
+ 
 /*
  * ***********************************************
  * Sets the APIKEY AND AUTHENTICITY TOKEN
@@ -10,23 +28,108 @@ $k = new apiKey();
 $apikey = $k->getApiKey();
 $authenticity_token = $k->getAuthenticityToken();
 //  END SETTING APIKEY AND AUTHENTICTY TOKEN
+
 /*
- *  **********************************************************************************************************************
- * Developer & Doc Author: Lawrence Owens
- * Name of Application: Blank2Semcat
- * 
- * First we will setup the URLs that we will be accessing along with the POSTFIELDS associated with each URL.
- * Secondly, this Application will post to multiple forms on the same server. They will not post in parallel. 
- * 	They will make multiple serial request using the same cURL handle.
- * 
- * See Resources: 
- * 	1) Multiple Actions with cURL - http://stackoverflow.com/questions/9549892/multiple-actions-with-curl
- * 	2) cURL Posting to Multiple Forms on Another Server - 
- * 		http://forums.devshed.com/php-development-5/curl-posting-multiple-forms-server-314318.html
- * 	3) Set an Option for a cURL Transfer - http://php.net/manual/en/function.curl-setopt.php
- * **********************************************************************************************************************
- 
- */
+ * ***************************************************************************************************************************************
+* 				Setting the user data within the variables that we'll use within the POSTFIELDS Data Links
+*
+* Setting the Data sent from the FMAP2Semcat Program available and ready to be inserted.The Data inserted here will essentially build the
+* 	POSTFIELD(cURL option POSTFIELDS) data links needed to autofill  the 5 forms.
+* ***************************************************************************************************************************************
+
+*/ //BEGIN SETTING USER DATA
+
+define("INSTATE", "FL"); // FL is a constant named INSTATE
+
+if(isset($_POST['firstname'])){
+	$firstname		=   	urlencode($_POST['firstname']);}
+		else $firstname = "Joe";
+
+@$middle 		= 		$_POST['middle'];
+
+if(isset($_POST['lastname'])){
+	$lastname		=   	urlencode($_POST['lastname']);}
+		else $lastname  = "Doe";
+
+@$suffix 		= 		$_POST['suffix'];
+
+if(isset($_POST['email'])){
+	$email		=   	urlencode($_POST['email']);}
+	else{ 
+			$email1  = "BlankEmail@email.com";
+			$email = urlencode($email1);
+					}
+	
+$state 			= 		INSTATE;
+
+if(isset($_POST['houseNumber'])){
+	$houseNumber		=   	urlencode($_POST['houseNumber']);}
+		else $houseNumber  = "1234";
+
+if(isset($_POST['streetName'])){
+	$streetName		=   	urlencode($_POST['streetName']);}
+		else $streetName = "BlankStreet";	
+
+if(isset($_POST['city'])){
+	$city		=   	urlencode($_POST['city']);}
+		else{
+				$city1 = "Winter Park";
+				$city  = urlencode($city1);
+					}
+
+if(isset($_POST['zip'])){
+	$zip		=   	$_POST['zip'];}
+	else $zip  = "32792";
+
+if(isset($_POST['builtMonth'])){
+	$builtMonth		=   	$_POST['builtMonth'];}
+	else $builtMonth  = "4";
+	
+if(isset($_POST['builtYear'])){
+	$builtYear		=   	$_POST['builtYear'];}
+	else $builtYear  = "2007";
+	
+if(isset($_POST['dwellingUse'])){
+	$dwellingUse		=   	$_POST['dwellingUse'];}
+	else $dwellingUse  = "Primary";
+		
+if(isset($_POST['occupiedBy'])){
+	$occupiedBy		=   	$_POST['occupiedBy'];}
+	else $occupiedBy  = "Owner";
+	
+if(isset($_POST['constructionType'])){
+	$constructionType		=   	$_POST['constructionType'];}
+	else $constructionType  = "Masonry";
+	
+if(isset($_POST['propertyType'])){
+	$propertyType		=   	$_POST['propertyType'];}
+	else $propertyType  = "Dwelling";
+
+if(isset($_POST['sqFootage'])){
+	$sqFootage		=   	$_POST['sqFootage'];}
+	else $sqFootage  = "2300";
+
+$fireHydrantDistance = "10";
+
+if(isset($_POST['desiredCoverage'])){
+	$desiredCoverage		=   	$_POST['desiredCoverage'];}
+	else $desiredCoverage  = "250000";
+
+if(isset($_POST['needbyMonth'])){
+	$needbyMonth		=   	$_POST['needbyMonth'];}
+	else $needbyMonth  = "12";
+
+if(isset($_POST['needbyDay'])){
+	$needbyDay		=   	$_POST['needbyDay'];}
+	else $needbyDay  = "12";
+
+if(isset($_POST['needbyYear'])){
+	$needbyYear		=   	$_POST['needbyYear'];}
+	else $needbyYear  = "2015";
+
+
+//END SETTING USER DATA
+
 
 /************************************************************************************************************************
  * 			Setting the URLs & RefererUrls within the variables that we'll use with cURL option CURLOPT_URL
@@ -78,11 +181,11 @@ $finishUrl = "https://entryform.semcat.net/1800stonewall/personal/finish?api_key
  * *************************************************************************************************************************
  
  */ //	BEGIN POSTFIELDS DATA	
-$startUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgiven_name%5D=ZTest&person%5Bmiddle_name%5D=Z&person%5Blast_name%5D=ZTesitng&person%5Bsuffix%5D=Jr.&lead%5Bemail%5D=Ztesting%40testing.com&lead%5Bhome%5D=0&lead%5Bhome%5D=1&lead%5Bauto%5D=0&lead%5Blife%5D=0&lead%5Bhealth%5D=0&lead%5Bfarm%5D=0&lead%5Bboat%5D=0&lead%5Brv%5D=0&lead%5Bmotorcycle%5D=0&lead%5Bplu%5D=0&lead%5Bdisability%5D=0&agent_uid=&api_key=$apikey&from=&commit=Get+quote";
-$applicantUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgender%5D=&person%5Bresidence_state%5D=FL&person%5Bcounty_id%5D=313&person%5Bbirth_dt_month%5D=&person%5Bbirth_dt_day%5D=&person%5Bbirth_dt_year%5D=&lead%5Bphone%5D=&nextpage=default&api_key=$apikey&commit=Next";
+$startUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgiven_name%5D=$firstname&person%5Bmiddle_name%5D=$middle&person%5Blast_name%5D=$lastname&person%5Bsuffix%5D=$suffix&lead%5Bemail%5D=$email&lead%5Bhome%5D=0&lead%5Bhome%5D=1&lead%5Bauto%5D=0&lead%5Blife%5D=0&lead%5Bhealth%5D=0&lead%5Bfarm%5D=0&lead%5Bboat%5D=0&lead%5Brv%5D=0&lead%5Bmotorcycle%5D=0&lead%5Bplu%5D=0&lead%5Bdisability%5D=0&agent_uid=&api_key=$apikey&from=fmap2semcat&commit=Get+quote";
+$applicantUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgender%5D=&person%5Bresidence_state%5D=FL&person%5Bcounty_id%5D=&person%5Bbirth_dt_month%5D=&person%5Bbirth_dt_day%5D=&person%5Bbirth_dt_year%5D=&lead%5Bphone%5D=&nextpage=default&api_key=$apikey&commit=Next";
 $coApplicantUrlD = "authenticity_token=$authenticity_token";
-$addressUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Baddress_house_number%5D=12345&lead%5Baddress_street_name%5D=1st+Street&lead%5Baddress_unit_number%5D=&lead%5Baddress_city%5D=Deerfield+Beach&lead%5Baddress_state%5D=FL&lead%5Baddress_postal_code%5D=33441&dwelling%5Bbuilt_dt_month%5D=4&dwelling%5Bbuilt_dt_year%5D=2007&dwelling%5Bpurchase_dt_month%5D=&dwelling%5Bpurchase_dt_year%5D=&dwelling%5Buse%5D=Primary&dwelling%5Bconstruction_type%5D=Veneer&dwelling%5Boccupied_by%5D=Owner&dwelling%5Bstructure_type%5D=Dwelling&dwelling%5Bnum_stories%5D=&dwelling%5Btotal_sq_ft%5D=2300&dwelling%5Bfire_hydrant_distance%5D=100&dwelling%5Bcov%5D=250000&nextpage=default&api_key=$apikey&commit=Next";
-$policyUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Bhome_contract_effective_dt_month%5D=11&lead%5Bhome_contract_effective_dt_day%5D=1&lead%5Bhome_contract_effective_dt_year%5D=2014&lead%5Bhome_prior_carrier%5D=&lead%5Bprior_home_payment%5D=%24&lead%5Byears_loss_free%5D=&nextpage=default&api_key=$apikey&commit=Next";
+$addressUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Baddress_house_number%5D=$houseNumber&lead%5Baddress_street_name%5D=$streetName&lead%5Baddress_unit_number%5D=&lead%5Baddress_city%5D=$city&lead%5Baddress_state%5D=FL&lead%5Baddress_postal_code%5D=$zip&dwelling%5Bbuilt_dt_month%5D=$builtMonth&dwelling%5Bbuilt_dt_year%5D=$builtYear&dwelling%5Bpurchase_dt_month%5D=&dwelling%5Bpurchase_dt_year%5D=&dwelling%5Buse%5D=$dwellingUse&dwelling%5Bconstruction_type%5D=$constructionType&dwelling%5Boccupied_by%5D=$occupiedBy&dwelling%5Bstructure_type%5D=$propertyType&dwelling%5Bnum_stories%5D=&dwelling%5Btotal_sq_ft%5D=$sqFootage&dwelling%5Bfire_hydrant_distance%5D=$fireHydrantDistance&dwelling%5Bcov%5D=$desiredCoverage&nextpage=default&api_key=$apikey&commit=Next";
+$policyUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Bhome_contract_effective_dt_month%5D=$needbyMonth&lead%5Bhome_contract_effective_dt_day%5D=$needbyDay&lead%5Bhome_contract_effective_dt_year%5D=$needbyYear&lead%5Bhome_prior_carrier%5D=&lead%5Bprior_home_payment%5D=%24&lead%5Byears_loss_free%5D=&nextpage=default&api_key=$apikey&commit=Next";
 $confirmUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Bcomments%5D=&api_key=$apikey&commit=Confirm+that+you%27re+done";
 // 		END POSTFIELDS DATA
  
