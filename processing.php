@@ -83,27 +83,31 @@ if(isset($_POST['zip'])){
 
 if(isset($_POST['builtMonth'])){
 	$builtMonth		=   	$_POST['builtMonth'];}
-	else $builtMonth  = "4";
+	else $builtMonth  = "6";
 	
 if(isset($_POST['builtYear'])){
 	$builtYear		=   	$_POST['builtYear'];}
 	else $builtYear  = "2007";
 	
-if(isset($_POST['dwellingUse'])){
-	$dwellingUse		=   	$_POST['dwellingUse'];}
-	else $dwellingUse  = "Primary";
+if(isset($_POST['dwellingUse']) && $_POST['dwellingUse'] == 'Primary Residence'){
+	//$dwellingUse		=   	$_POST['dwellingUse'];}
+	$dwellingUse		=   	"Primary";}
+	else $dwellingUse  = "Secondary";
 		
-if(isset($_POST['occupiedBy'])){
-	$occupiedBy		=   	$_POST['occupiedBy'];}
-	else $occupiedBy  = "Owner";
+if(isset($_POST['occupiedBy']) && $_POST['occupiedBy'] == 'Owner'){
+	//$occupiedBy		=   	$_POST['occupiedBy'];}
+	$occupiedBy		=   	"Owner";}
+	else $occupiedBy  = "Renter";
 	
 if(isset($_POST['constructionType'])){
 	$constructionType		=   	$_POST['constructionType'];}
 	else $constructionType  = "Masonry";
 	
-if(isset($_POST['propertyType'])){
-	$propertyType		=   	$_POST['propertyType'];}
-	else $propertyType  = "Dwelling";
+if(isset($_POST['propertyType']) && $_POST['propertyType'] == 'house'){
+	//$propertyType		=   	$_POST['propertyType'];}
+	$propertyType		=   	"Dwelling";}
+	else {$propertyType  = "Town House";
+	$propertyType = urlencode($propertyType);}
 
 if(isset($_POST['sqFootage'])){
 	$sqFootage		=   	$_POST['sqFootage'];}
@@ -273,6 +277,10 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, "$confirmUrlD"); // confirm Data
 
 echo $res = curl_exec($ch); // EXECUTE CONFIRM FORM COMPLETION
 // TODO: check $res FOR SUCCESS
+
+//Put last URL into string so we can send it to DB
+$lastUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+
 
 
 curl_close($ch);
