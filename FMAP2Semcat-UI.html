@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>FMAP2Semcat UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (FMAP2Semcat UI.psd) -->
+<table id="Table_01" width="719" height="603" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td>
+			<img src="images/FMAP2Semcat-UI_01.jpg" width="151" height="60" alt=""></td>
+		<td>
+			<img src="images/FMAP2Semcat-UI_02.jpg" width="561" height="60" alt=""></td>
+		<td rowspan="2">
+			<img src="images/FMAP2Semcat-UI_03.jpg" width="7" height="603" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/FMAP2Semcat-UI_04.jpg" width="151" height="543" alt=""></td>
+		<td width="561" height="543" align="left" valign="top"><br /><div style="background-color:#090; border:solid; color: #FFF;"> 
+		  <h3 align="center">Please Choose the File that you wish to Import by Selecting the file then clicking the IMPORT button</h3></div><br /><form enctype="multipart/form-data" action="fmap2db.php" method="POST">
+    <!-- MAX_FILE_SIZE must precede the file input field -->
+    <input type="hidden" name="MAX_FILE_SIZE" value="30000" /><!-- Name of input element determines name in $_FILES array -->
+    <b>Import this file:</b> 
+    <input name="fmapDataFile" type="file" />
+    <input type="submit" name="Send" value="Import" />
+</form></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>

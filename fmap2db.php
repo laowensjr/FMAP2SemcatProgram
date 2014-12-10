@@ -1,4 +1,33 @@
-<title>FMAP to DB</title><?php 
+<html>
+<head>
+<title>FMAP2Semcat UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+body {
+	background-color: #E9E9E9;
+}
+-->
+</style></head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (FMAP2Semcat UI.psd) --> 
+<br />
+<br />
+<table id="Table_01" width="719" height="603" border="0" cellpadding="0" cellspacing="0" align="center">
+	<tr>
+		<td>
+			<img src="images/FMAP2Semcat-UI_01.jpg" width="151" height="60" alt=""></td>
+		<td align="center" valign="top">
+			<img src="images/FMAP2Semcat-UI_02.jpg" width="561" height="60" alt=""></td>
+		<td rowspan="2">
+			<img src="images/FMAP2Semcat-UI_03.jpg" width="7" height="603" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+<img src="images/FMAP2Semcat-UI_04.jpg" alt="Import your File" width="151" height="543" border="0" usemap="#Map"></td>
+		<td width="561" height="543" align="left" valign="top" bgcolor="#FFFFFF"><br /><div style="background-color:#090; border:solid; color: #FFF;"> 
+		  <h3 align="center">Results of Import</h3></div><br />
+          <?php 
 include('Classes/PHPExcel.php');
 $username = 'testusername28';
 
@@ -9,6 +38,7 @@ $uploaddir = 'fmapUploads/'.$username .'/';
 if(!file_exists(@mkdir('fmapUploads/'. $username, 0777, true))){// or die(mysql_error());
 $madeDir = 'fmapUploads/'.$username.'/';
 $uploadfile = $madeDir . basename($_FILES['fmapDataFile']['name']);
+move_uploaded_file($_FILES['fmapDataFile']['tmp_name'], $uploadfile);
 }else{
 echo " File already Exists";
 exit;
@@ -17,7 +47,7 @@ exit;
 if (file_exists($uploadfile)) {
 	echo "The file named " . basename($uploadfile) ." already exists, rename the file";
 	echo '<br/>';
-	echo "There were '0' FMAP File(s) successfully uploaded.";
+	echo 'There were <b>0</b> FMAP File(s) successfully uploaded.<a href="fmapUploader.php">  Try Again</a>' ;
 	exit;
 } else {
 	//echo "The file " . basename($uploadfile) ."  does not exist";
@@ -28,10 +58,15 @@ move_uploaded_file($_FILES['fmapDataFile']['tmp_name'], $uploadfile);
 
 ///CONNECTION
 //First we need to make a connection with the database
-$host='localhost'; // Host Name.
+/*$host='localhost'; // Host Name.
 $db_user= 'laowensjr'; //User Name
 $db_password= 'lo19315761';
 $db= 'fmapdatarecords'; // Database Name.
+*/
+$host = "mysql7.000webhost.com";
+$db = "a2300626_stone";
+$db_user = "a2300626_laowens";
+$db_password = "lo19315761";
 
 $mysqli = new mysqli("$host", "$db_user", "$db_password", "$db");
 /*if ($mysqli->connect_error) {
@@ -101,5 +136,22 @@ echo '<br/>';
 echo '<br/>';
 echo 'Duplicate Entries are NOT inserted twice';
 echo '<br/>';
-echo "There were ". count($result) ." FMAP File(s) successfully uploaded." ;
+echo 'There were '. count($result) .' FMAP File(s) successfully uploaded.<a href="fmapUploader.php">Import Another</a>' ;
+echo '<br/>';
+echo '<a href="unprocessed.php">Click here to Go & Process the Data you just Uploaded</a>';
 ?>
+          
+          </td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+
+
+<map name="Map">
+  <area shape="rect" coords="29,17,124,39" href="fmapUploader.php">
+  <area shape="rect" coords="9,54,145,73" href="dataSending2Processing.php">
+  <area shape="rect" coords="13,90,141,108" href="#">
+  <area shape="rect" coords="15,124,141,144" href="#">
+</map>
+</body>
+</html>

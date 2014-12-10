@@ -43,24 +43,28 @@ define("INSTATE", "FL"); // FL is a constant named INSTATE
 
 if(isset($_POST['firstname'])){
 	$firstname		=   	urlencode($_POST['firstname']);}
-		else $firstname = "Joe";
+		else $firstname = "Home";
 
 @$middle 		= 		$_POST['middle'];
 
 if(isset($_POST['lastname'])){
 	$lastname		=   	urlencode($_POST['lastname']);}
-		else $lastname  = "Doe";
+		else $lastname  = "Owner";
 
 @$suffix 		= 		$_POST['suffix'];
 
 if(isset($_POST['email'])){
 	$email		=   	urlencode($_POST['email']);}
 	else{ 
-			$email1  = "BlankEmail@email.com";
+			$email1  = "laowensjr@gmail.com";
 			$email = urlencode($email1);
 					}
 	
 $state 			= 		INSTATE;
+
+if(isset($_POST['phone'])){
+	$phone		=   	urlencode($_POST['phone']);}
+		else $phone  = "555-555-1212";
 
 if(isset($_POST['houseNumber'])){
 	$houseNumber		=   	urlencode($_POST['houseNumber']);}
@@ -101,7 +105,7 @@ if(isset($_POST['occupiedBy']) && $_POST['occupiedBy'] == 'Owner'){
 	
 if(isset($_POST['constructionType'])){
 	$constructionType		=   	$_POST['constructionType'];}
-	else $constructionType  = "Masonry";
+	else $constructionType  = "Frame";
 	
 if(isset($_POST['propertyType']) && $_POST['propertyType'] == 'house'){
 	//$propertyType		=   	$_POST['propertyType'];}
@@ -112,8 +116,11 @@ if(isset($_POST['propertyType']) && $_POST['propertyType'] == 'house'){
 if(isset($_POST['sqFootage'])){
 	$sqFootage		=   	$_POST['sqFootage'];}
 	else $sqFootage  = "2300";
-
-$fireHydrantDistance = "10";
+//Added default values per Request
+$fireHydrantDistance = "200";
+$stories = "1";
+$deadbolt = "true";
+//end
 
 if(isset($_POST['desiredCoverage'])){
 	$desiredCoverage		=   	$_POST['desiredCoverage'];}
@@ -130,6 +137,10 @@ if(isset($_POST['needbyDay'])){
 if(isset($_POST['needbyYear'])){
 	$needbyYear		=   	$_POST['needbyYear'];}
 	else $needbyYear  = "2015";
+	
+if(isset($_POST['propertyid'])){
+	$propertyid		=   	urlencode($_POST['propertyid']);}
+		
 
 
 //END SETTING USER DATA
@@ -186,10 +197,10 @@ $finishUrl = "https://entryform.semcat.net/1800stonewall/personal/finish?api_key
  
  */ //	BEGIN POSTFIELDS DATA	
 $startUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgiven_name%5D=$firstname&person%5Bmiddle_name%5D=$middle&person%5Blast_name%5D=$lastname&person%5Bsuffix%5D=$suffix&lead%5Bemail%5D=$email&lead%5Bhome%5D=0&lead%5Bhome%5D=1&lead%5Bauto%5D=0&lead%5Blife%5D=0&lead%5Bhealth%5D=0&lead%5Bfarm%5D=0&lead%5Bboat%5D=0&lead%5Brv%5D=0&lead%5Bmotorcycle%5D=0&lead%5Bplu%5D=0&lead%5Bdisability%5D=0&agent_uid=&api_key=$apikey&from=fmap2semcat&commit=Get+quote";
-$applicantUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgender%5D=&person%5Bresidence_state%5D=FL&person%5Bcounty_id%5D=&person%5Bbirth_dt_month%5D=&person%5Bbirth_dt_day%5D=&person%5Bbirth_dt_year%5D=&lead%5Bphone%5D=&nextpage=default&api_key=$apikey&commit=Next";
+$applicantUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&person%5Bgender%5D=&person%5Bresidence_state%5D=FL&person%5Bcounty_id%5D=&person%5Bbirth_dt_month%5D=&person%5Bbirth_dt_day%5D=&person%5Bbirth_dt_year%5D=&lead%5Bphone%5D=$phone&nextpage=default&api_key=$apikey&commit=Next";
 $coApplicantUrlD = "authenticity_token=$authenticity_token";
-$addressUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Baddress_house_number%5D=$houseNumber&lead%5Baddress_street_name%5D=$streetName&lead%5Baddress_unit_number%5D=&lead%5Baddress_city%5D=$city&lead%5Baddress_state%5D=FL&lead%5Baddress_postal_code%5D=$zip&dwelling%5Bbuilt_dt_month%5D=$builtMonth&dwelling%5Bbuilt_dt_year%5D=$builtYear&dwelling%5Bpurchase_dt_month%5D=&dwelling%5Bpurchase_dt_year%5D=&dwelling%5Buse%5D=$dwellingUse&dwelling%5Bconstruction_type%5D=$constructionType&dwelling%5Boccupied_by%5D=$occupiedBy&dwelling%5Bstructure_type%5D=$propertyType&dwelling%5Bnum_stories%5D=&dwelling%5Btotal_sq_ft%5D=$sqFootage&dwelling%5Bfire_hydrant_distance%5D=$fireHydrantDistance&dwelling%5Bcov%5D=$desiredCoverage&nextpage=default&api_key=$apikey&commit=Next";
-$policyUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Bhome_contract_effective_dt_month%5D=$needbyMonth&lead%5Bhome_contract_effective_dt_day%5D=$needbyDay&lead%5Bhome_contract_effective_dt_year%5D=$needbyYear&lead%5Bhome_prior_carrier%5D=&lead%5Bprior_home_payment%5D=%24&lead%5Byears_loss_free%5D=&nextpage=default&api_key=$apikey&commit=Next";
+$addressUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Baddress_house_number%5D=$houseNumber&lead%5Baddress_street_name%5D=$streetName&lead%5Baddress_unit_number%5D=&lead%5Baddress_city%5D=$city&lead%5Baddress_state%5D=FL&lead%5Baddress_postal_code%5D=$zip&dwelling%5Bbuilt_dt_month%5D=$builtMonth&dwelling%5Bbuilt_dt_year%5D=$builtYear&dwelling%5Bpurchase_dt_month%5D=&dwelling%5Bpurchase_dt_year%5D=&dwelling%5Buse%5D=$dwellingUse&dwelling%5Bconstruction_type%5D=$constructionType&dwelling%5Boccupied_by%5D=$occupiedBy&dwelling%5Bstructure_type%5D=$propertyType&dwelling%5Bnum_stories%5D=$stories&dwelling%5Btotal_sq_ft%5D=$sqFootage&dwelling%5Bfire_hydrant_distance%5D=$fireHydrantDistance&dwelling%5Bcov%5D=$desiredCoverage&dwelling%5Bdeadbolt%5D=$deadbolt&nextpage=default&api_key=$apikey&commit=Next";
+$policyUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Bhome_contract_effective_dt_month%5D=$needbyMonth&lead%5Bhome_contract_effective_dt_day%5D=$needbyDay&lead%5Bhome_contract_effective_dt_year%5D=$needbyYear&lead%5Bhome_prior_carrier%5D=AAA&lead%5Bprior_home_payment%5D=%24&lead%5Byears_loss_free%5D=&nextpage=default&api_key=$apikey&commit=Next";
 $confirmUrlD = "utf8=%E2%9C%93&authenticity_token=$authenticity_token&lead%5Bcomments%5D=&api_key=$apikey&commit=Confirm+that+you%27re+done";
 // 		END POSTFIELDS DATA
  
@@ -209,7 +220,7 @@ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // allow redirects
 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable 
 //curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
-curl_setopt ($ch, CURLOPT_CAINFO, 'c:\wamp\www\fmap2semcat\1800stonewall\cacert.pem');
+curl_setopt ($ch, CURLOPT_CAINFO, '/1800stonewall/cacert.pem');
 // END START FORM COMPLETION
 
 if($res = curl_exec($ch)){
@@ -276,13 +287,35 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, "$confirmUrlD"); // confirm Data
 //END CONFIRM FORM COMPLETION
 
 echo $res = curl_exec($ch); // EXECUTE CONFIRM FORM COMPLETION
+//$res = curl_exec($ch); // EXECUTE CONFIRM FORM COMPLETION
 // TODO: check $res FOR SUCCESS
 
 //Put last URL into string so we can send it to DB
 $lastUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-
-
+//echo $lastUrl.'<br />';
 
 curl_close($ch);
+
+/*
+//Connect to DB then Update Status and qoutelink
+///CONNECTION
+//First we need to make a connection with the database
+$host='localhost'; // Host Name.
+$db_user= 'laowensjr'; //User Name
+$db_password= 'lo19315761';
+$db= 'fmapdatarecords'; // Database Name.
+*/
+$host = "mysql7.000webhost.com";
+$db = "a2300626_stone";
+$db_user = "a2300626_laowens";
+$db_password = "lo19315761";
+
+$mysqli2 = new mysqli("$host", "$db_user", "$db_password", "$db");
+$query2 = "UPDATE customerinfo SET status = 'processed', quotelink = '$lastUrl' WHERE propertyid='$propertyid'";
+$mysqli2->query($query2);
+
+
+
+//header("Location: unprocessed.php");
 
 ?>

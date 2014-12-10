@@ -1,27 +1,50 @@
-<?php
+<html>
+<head>
+<title>FMAP2Semcat UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+body {
+	background-color: #E9E9E9;
+}
+-->
+</style></head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (FMAP2Semcat UI.psd) -->
+<br />
+<br />
+<table id="Table_01" width="719" height="603" border="0" cellpadding="0" cellspacing="0" align="center">
+	<tr>
+		<td>
+			<img src="images/FMAP2Semcat-UI_01.jpg" width="151" height="60" alt=""></td>
+		<td>
+			<img src="images/FMAP2Semcat-UI_02.jpg" width="561" height="60" alt=""></td>
+		<td rowspan="2">
+			<img src="images/FMAP2Semcat-UI_03.jpg" width="7" height="603" alt=""></td>
+	</tr>
+	<tr>
+		<td align="left" valign="top" bgcolor="#FFFFFF"><img src="images/FMAP2Semcat-UI_04.jpg" width="151" height="543" alt=""></td>
+	  <td width="561" height="543" align="left" valign="top" bgcolor="#FFFFFF"><br /><div style="background-color:#090; border:solid; color: #FFF;"> 
+		  <h3 align="center">Below are the records that have NOT been Processed. Please click on TRANSFER to transfer the quote information into Semcat.</h3></div>
+          <?php
 class dataSending2Processing {
 	private $host, $db_user, $db_password, $db;
 	
 	
 	function dataSending2Processing() {
 		
-		//First we need to make a connection with the database - SEE OWENSPC.COM:2082 database
+		//First we need to make a connection with the database
 		$host='localhost'; // Host Name.
-		$db_user= 'owenspcc_laowens'; //User Name
+		$db_user= 'laowensjr'; //User Name
 		$db_password= 'lo19315761';
-		$db= 'owenspcc_fmapdatarecords'; // Database Name.
+		$db= 'fmapdatarecords'; // Database Name.
 		
-		/*
-		//FREE SERVER
-		$host = "mysql7.000webhost.com";
-$db = "a2300626_stone";
-$db_user = "a2300626_laowens";
-$db_password = "lo19315761";
-		*/
 		$this->host = $host;
 		$this->db_user = $db_user;
 		$this->db_password = $db_password;
 		$this->db = $db;
+		
+		
 		
 	}
 	
@@ -30,7 +53,7 @@ $db_password = "lo19315761";
 		$mysqli = new mysqli("$this->host", "$this->db_user", "$this->db_password", "$this->db");
 		$query = "SELECT * FROM customerinfo WHERE status = 'unprocessed'";
 		$dataSQL = $mysqli->query($query);
-		//REGEX: USING UNSTRUCTURED DATA IN DATABASE
+		//YOU WILL NEED TO USE REGULAR EXPRESSIONS TO SET VARIABLES IN FORM BELOW. USING UNSTRUCTURED DATA IN DATABASE
 		while($data = $dataSQL->fetch_array(MYSQLI_ASSOC)){
 			extract($data);
 			//SET UP VARS USING REGEX
@@ -73,7 +96,6 @@ $db_password = "lo19315761";
 				$phone = $areacode.' '.$phone1of2.''.$phone2of2;
 				echo $fullname.' '.$phone;
 				*/
-				$phone = $areacode.' '.$phone1of2.''.phone2of2;
 				 
 			} elseif(!$c){
 			
@@ -100,7 +122,6 @@ $db_password = "lo19315761";
 					$phone = $areacode.' '.$phone1of2.''.phone2of2;
 					echo $fullname.' '.$phone;
 					*/
-					$phone = $areacode.' '.$phone1of2.''.phone2of2;
 				}
 			
 			}//elseif
@@ -189,6 +210,71 @@ $propertyaddress='7394 LAHANA CIR BOYNTON BEACH, FL 33437-7174 PALM BEACH County
 
 //BEGIN PRINT TABLE
 			?>
+		<div style="width:100%;">
+<table>
+<tr>
+<th width="113">
+Name
+</th>
+<th width="319">
+Address
+</th>
+<th width="113">
+Status
+</th>
+</tr>
+<tr>
+<td>
+<?php  echo $firstname.' '.$lastname; ?>
+
+</td>
+<td>
+<?php  echo $fullAddress; ?>
+</td>
+<td>
+<?php 
+//Begin Form 
+?>
+<form id="transfer" name="transfer" method="post" action="processing.php">
+  <input type="hidden" name="firstname" value="<?php echo $firstname; ?>" id="hiddenField" />
+  <input type="hidden" name="middle" value="<?php echo @$middle; ?>" id="hiddenField" />
+  <input type="hidden" name="lastname" value="<?php echo $lastname; ?>" id="hiddenField" />
+  <input type="hidden" name="suffix" value="<?php echo @$suffix; ?>" id="hiddenField" />
+  <input type="hidden" name="email" value="<?php echo @$emailAddress; ?>" id="hiddenField" />
+  <input type="hidden" name="houseNumber" value="<?php echo $houseNumber; ?>" id="hiddenField" />
+  <input type="hidden" name="streetName" value="<?php echo $streetname; ?>" id="hiddenField" />
+  <input type="hidden" name="city" value="<?php echo $city; ?>" id="hiddenField" />
+  <input type="hidden" name="zip" value="<?php echo $zip; ?>" id="hiddenField" />
+  <input type="hidden" name="builtMonth" value="<?php echo '6';?>" id="hiddenField" />
+  <input type="hidden" name="builtYear" value="<?php echo $yearbuilt ?>" id="hiddenField" />
+  
+  <input type="hidden" name="dwellingUse" value="<?php echo $homeuse;?>" id="hiddenField" />
+  <input type="hidden" name="occupiedBy" value="<?php echo $occupancy; ?>" id="hiddenField" />
+  <input type="hidden" name="constructionType" value="<?php echo $constructiontype; ?>" id="hiddenField" />
+  <input type="hidden" name="propertyType" value="<?php echo $propertytype; ?>" id="hiddenField" />
+  <input type="hidden" name="sqFootage" value="<?php echo $sqfootage;?>" id="hiddenField" />
+  <input type="hidden" name="desiredCoverage" value="<?php  echo $desiredcoverage;?>" id="hiddenField" />
+  <input type="hidden" name="needbyMonth" value="<?php echo $needbyMonth;?>" id="hiddenField" />
+  <input type="hidden" name="needbyDay" value="<?php echo $needbyDay;?>" id="hiddenField" />
+  <input type="hidden" name="needbyYear" value="<?php echo $needbyYear;?>" id="hiddenField" />
+  <input type="hidden" name="propertyid" value="<?php echo $propertyid;?>" id="hiddenField" />
+<div style="font-size:12px; font-style:italic; color:#F00;">
+<?php echo 'Need By: '.$needbyMonth.' '.$needbyDay .' '.$needbyYear.'<br />'; ?>
+</div>
+<input type="image" name="submit" id="submit" src="images/transferButton.jpg" />
+</form>
+
+
+<?php 
+//End Form
+?>
+
+</td>
+</tr>
+</table>
+</div>
+			
+			
 			<?php
 			//End Table
 			
@@ -197,6 +283,15 @@ $propertyaddress='7394 LAHANA CIR BOYNTON BEACH, FL 33437-7174 PALM BEACH County
 	}
 	
 }
-
-
 ?>
+<?php
+$runprocessing = new dataSending2Processing();
+$runprocessing->getReadyFMAPData();
+?>
+          </td>
+	</tr>
+</table>
+<br /> <br />
+<!-- End Save for Web Slices -->
+</body>
+</html>
